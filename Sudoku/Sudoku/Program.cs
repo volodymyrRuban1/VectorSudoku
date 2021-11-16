@@ -7,8 +7,10 @@
 	{
 		static void Main(string[] args)
 		{
-			var sudoku = new Sudoku(9);
-			
+			var sudoku = new Sudoku(15);
+			sudoku.FillSudokuWithRandomValues();
+			Console.WriteLine(sudoku);
+
 		}
 	}
 }

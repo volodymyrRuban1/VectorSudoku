@@ -8,6 +8,6 @@ namespace Sudoku
 {
 	public static class Constants
 	{
-		public const int MIN_SIZE = 1;
+		public const int MinSize = 1;
 	}
 }
