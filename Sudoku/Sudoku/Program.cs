@@ -1,5 +1,6 @@
 ﻿	using System;
-	using System.Reflection.Metadata.Ecma335;
+	using System.Diagnostics;
+	using System.Security.Cryptography.X509Certificates;
 
 	namespace Sudoku
 {
@@ -7,10 +8,49 @@
 	{
 		static void Main(string[] args)
 		{
-			var sudoku = new Sudoku(15);
+			const int sudokuSize = 4;
+
+			var sudoku = new Sudoku(sudokuSize);
+
 			sudoku.FillSudokuWithRandomValues();
+
 			Console.WriteLine(sudoku);
 
+			Console.WriteLine(new string('-', 30));
+
+
+			Console.WriteLine("Are rows valid: {0}", sudoku.AreRowsValid());
+
+			Console.WriteLine("Are columns valid: {0}", sudoku.AreColumnsValid());
+
+			Console.WriteLine("Are squares valid: {0}", sudoku.AreSquaresValid());
+
+			Console.WriteLine("Is sudoku valid : {0}", sudoku.IsSudokuValid());
+
+			Console.WriteLine(new string('-', 30));
+
+			var mySudoku = new int[sudokuSize, sudokuSize]
+			{
+				{2, 3, 1, 4}, {4, 1, 3, 2},
+				{3, 4, 2, 1}, {1, 2, 4, 3}
+			};
+
+
+
+			sudoku.SetCustomSudokuField = mySudoku;
+
+			Console.WriteLine(sudoku);
+			
+			Console.WriteLine(new string('-', 30));
+
+
+			Console.WriteLine("Are rows valid: {0}", sudoku.AreRowsValid());
+
+			Console.WriteLine("Are columns valid: {0}", sudoku.AreColumnsValid());
+
+			Console.WriteLine("Are squares valid: {0}", sudoku.AreSquaresValid());
+
+			Console.WriteLine("Is sudoku valid : {0}", sudoku.IsSudokuValid());
 		}
 	}
 }

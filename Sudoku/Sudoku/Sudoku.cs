@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Text;
 using System.Linq;
+using Microsoft.VisualBasic;
 
 namespace Sudoku
 {
@@ -22,8 +23,14 @@ namespace Sudoku
 				
 		}
 
+		public int[,] SetCustomSudokuField
+		{
+			set => _sudoku = value;
+		}
+
 		private bool IsSizeValid(int size) => size > Constants.MinSize;
-		
+
+		private bool AreSquaresSizeValid() => (int)Math.Sqrt(_sudokuSize) == _squareSize;
 
 		public void FillSudokuWithRandomValues()
 		{
@@ -32,15 +39,74 @@ namespace Sudoku
 			{
 				for (int j = 0; j < _sudokuSize; j++)
 				{
-					_sudoku[i,j] = rand.Next(1, _sudokuSize + 1);
+					_sudoku[i,j] = rand.Next(Constants.MinNumber, _sudokuSize + 1);
 				}
 			}
 		}
 
-		//public bool IsSudokuValid()
-		//{
+		public bool AreRowsValid()
+		{
+			for (int i = 0; i < _sudokuSize; i++)
+			{
+				for (int j = 0; j < _sudokuSize; j++)
+				{
+					var current = _sudoku[i, j];
 
-		//}
+					for (int k = j + 1; k < _sudokuSize; k++)
+					{
+						if (current.Equals(_sudoku[i, k]))
+						{
+							return false;
+						}
+					}
+
+				}
+			}
+			return true;
+		}
+
+		public bool AreColumnsValid()
+		{
+			for (int i = 0; i < _sudokuSize; i++)
+			{
+				for (int j = 0; j < _sudokuSize; j++)
+				{
+					var current = _sudoku[j, i];
+
+					for (int k = j + 1; k < _sudokuSize; k++)
+					{
+						if (current.Equals(_sudoku[k, i]))
+						{
+							return false;
+						}
+					}
+				}
+			}
+			return true;
+		}
+
+		public bool AreSquaresValid()
+		{
+			for (int i = 0; i < _sudokuSize; i++)
+			{
+				var numbersInSquare = new bool[_sudokuSize + 1];
+				for (int j = 0; j < _sudokuSize; j++)
+				{
+					var number = GetNumberFromSquare(i, j);
+					if (number != 0 && numbersInSquare[number])
+					{
+						return false;
+					}
+
+					numbersInSquare[number] = true;
+				}
+			}
+			return true;
+		}
+
+		public bool IsSudokuValid() => AreRowsValid() && AreColumnsValid() 
+		                                              && AreSquaresValid() 
+		                                              && AreSquaresSizeValid();
 
 		public override string ToString()
 		{
@@ -49,11 +115,11 @@ namespace Sudoku
 
 			for (int i = 0; i < _sudokuSize; i++)
 			{
-				builder.Append("\n");
+				builder.AppendLine();
 
-				if (i % _squareSize == 0 && i != 0)
+				if (IsIndexValidForNewLine(i))
 				{
-					builder.Append("\n");
+					builder.AppendLine();
 				}
 
 				for (int j = 0; j < _sudokuSize; j++)
@@ -77,6 +143,15 @@ namespace Sudoku
 			builder.Append("\n]\n");
 
 			return builder.ToString();
+		}
+
+		private bool IsIndexValidForNewLine(int index) => index % _squareSize == 0 && index != 0;
+		private int GetNumberFromSquare(int y, int x)
+		{
+			var row = x / _squareSize + _squareSize * (y / _squareSize);
+			var column = _squareSize * (y % _squareSize) + x % _squareSize;
+			
+			return _sudoku[row,column];
 		}
 	}
 }
