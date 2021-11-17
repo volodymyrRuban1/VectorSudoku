@@ -6,7 +6,7 @@
 	{
 		static void Main(string[] args)
 		{
-			const int sudokuSize = 1;
+			const int sudokuSize = 4;
 
 			PrintSudoku(sudokuSize);
 

@@ -25,8 +25,6 @@ namespace Sudoku
 			set => _sudoku = value;
 		}
 
-		public bool AreSquaresSizeValid() => (int)Math.Sqrt(_sudokuSize) == _squareSize;
-
 		public void FillSudokuWithRandomValues()
 		{
 			var rand = new Random();
@@ -98,6 +96,8 @@ namespace Sudoku
 			}
 			return true;
 		}
+
+		public bool AreSquaresSizeValid() => (int)Math.Sqrt(_sudokuSize) == _squareSize;
 
 		public bool IsSudokuValid() => AreRowsValid() && AreColumnsValid() 
 		                                              && AreSquaresValid() 
