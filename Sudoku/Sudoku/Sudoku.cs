@@ -11,13 +11,13 @@ namespace Sudoku
 
 		public Sudoku(int size)
 		{
-			if (IsSizeValid(size))
+			if (!IsSizeValid(size))
 			{
-				_squareSize = (int)Math.Sqrt(size);
-				_sudokuSize = _squareSize * _squareSize;
-				_sudoku = new int[_sudokuSize, _sudokuSize];
+				throw new Exception("Size should be more than 1");
 			}
-				
+			_squareSize = (int)Math.Sqrt(size);
+			_sudokuSize = _squareSize * _squareSize;
+			_sudoku = new int[_sudokuSize, _sudokuSize];
 		}
 
 		public int[,] SetCustomSudokuField
@@ -25,9 +25,7 @@ namespace Sudoku
 			set => _sudoku = value;
 		}
 
-		private bool IsSizeValid(int size) => size > Constants.MinSize;
-
-		private bool AreSquaresSizeValid() => (int)Math.Sqrt(_sudokuSize) == _squareSize;
+		public bool AreSquaresSizeValid() => (int)Math.Sqrt(_sudokuSize) == _squareSize;
 
 		public void FillSudokuWithRandomValues()
 		{
@@ -143,6 +141,9 @@ namespace Sudoku
 		}
 
 		private bool IsIndexValidForNewLine(int index) => index % _squareSize == 0 && index != 0;
+
+		private bool IsSizeValid(int size) => size > Constants.MinSize;
+
 		private int GetNumberFromSquare(int y, int x)
 		{
 			var row = x / _squareSize + _squareSize * (y / _squareSize);

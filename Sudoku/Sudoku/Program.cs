@@ -6,11 +6,11 @@
 	{
 		static void Main(string[] args)
 		{
-			const int sudokuSize = 4;
+			const int sudokuSize = 1;
 
 			PrintSudoku(sudokuSize);
 
-			var mySudoku = new int[sudokuSize, sudokuSize]
+			var mySudoku = new int[4, 4]
 			{
 				{2, 3, 1, 4}, {4, 1, 3, 2},
 				{3, 4, 2, 1}, {1, 2, 4, 3}
@@ -22,7 +22,10 @@
 
 		public static void PrintSudoku(int sudokuSize, int[,] customSudoku = null)
 		{
-			var sudoku = new Sudoku(sudokuSize);
+			try
+			{
+				var sudoku = new Sudoku(sudokuSize);
+			
 
 			if(customSudoku is null)
 				sudoku.FillSudokuWithRandomValues();
@@ -40,9 +43,17 @@
 
 			Console.WriteLine("Are squares valid: {0}", sudoku.AreSquaresValid());
 
+			Console.WriteLine("Are squares size valid: {0}", sudoku.AreSquaresSizeValid());
+
 			Console.WriteLine("Is sudoku valid : {0}", sudoku.IsSudokuValid());
 
 			Console.WriteLine(new string('-', 30));
+
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine(e.Message);
+			}
 		}
 	}
 }
